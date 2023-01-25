@@ -1,8 +1,11 @@
+import { Address } from "./address";
+import { Company } from "./company";
+
 export interface User {
-    first_name: string;
-    last_name: string;
-    company_name: string;
-    company_full_address: string;
-    website: string;
+    address: Address;
+    company: Company;
+    email: string;
+    name: string;
     phone: string;
+    website: string;
 }

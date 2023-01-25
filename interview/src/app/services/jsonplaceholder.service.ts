@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +15,17 @@ export class JsonPlaceHolderService {
       this.subscription.unsubscribe();
     }
   }
-  public async getUserList(): Promise<User[]> {
+  public async getUserList(): Promise<Observable<User[]>> {
     let result: User[] = [];
-    this.subscription = await this.httpService.get<User[]>('https://jsonplaceholder.typicode.com/users')
-      .subscribe(res => { 
-        result = res;
-        console.log(result);
+    // this.subscription = 
+    return await this.httpService.get<User[]>('https://jsonplaceholder.typicode.com/users');
+      // .subscribe(res => { 
+      //   console.log(res)
+      //   result = res;
+      //   console.log(result);
 
-      });
-    return result;
+      // });
+    // return result;
   }
   
 }

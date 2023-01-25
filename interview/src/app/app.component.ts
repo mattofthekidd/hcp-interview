@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { User } from './models/user';
+import { HCPService } from './services/hcpservice.service';
 import { JsonPlaceHolderService } from './services/jsonplaceholder.service';
 
 @Component({
@@ -8,20 +10,43 @@ import { JsonPlaceHolderService } from './services/jsonplaceholder.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  private service: JsonPlaceHolderService;
+  private jsonPlaceHolderService: JsonPlaceHolderService;
+  private hcpService: HCPService;
+  private subscriptions: Subscription[] = [];
 
   public users: User[] = [];
 
-  public constructor(jsonPlaceHolderService: JsonPlaceHolderService) {
-    this.service = jsonPlaceHolderService;
+  public constructor(
+      jsonPlaceHolderService: JsonPlaceHolderService,
+      hcpService: HCPService
+    ) {
+    this.jsonPlaceHolderService = jsonPlaceHolderService;
+    this.hcpService = hcpService;
   };
 
-  async ngOnInit() {
+
+  async ngOnInit(): Promise<void> {
     await this.init();
+    // this.sendData();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(x => x.unsubscribe());
   }
   
   private async init(): Promise<void> {
-    this.users = await this.service.getUserList();
+    // const result = 
+    this.subscriptions.push(
+      await (
+        await this.jsonPlaceHolderService.getUserList()
+      ).subscribe(x => this.users = x)
+    );
+    console.log(this.users)
+  }
+
+  private sendData(): void {
+    console.log(this.users)
+    this.hcpService.postUserList(this.users);
   }
 
 }
