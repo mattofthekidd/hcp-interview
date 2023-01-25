@@ -17,22 +17,11 @@ export class JsonPlaceHolderService {
   }
   public async getUserList(): Promise<User[]> {
     let result: User[] = [];
-    this.subscription = await this.httpService.get<RequestBody>('https://jsonplaceholder.typicode.com/users')
+    this.subscription = await this.httpService.get<User[]>('https://jsonplaceholder.typicode.com/users')
       .subscribe(res => { 
-          res.users.forEach(x => { 
-            result.push(x) 
-          });
+        result = res;
       });
     return result;
   }
   
-}
-
-// We will only ever use this interface in this file.
-// As such I won't move it to a model file.
-interface RequestBody {
-  userId: string;
-  password: string;
-  outputType: string;
-  users: User[];
 }

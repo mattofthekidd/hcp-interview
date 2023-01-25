@@ -23,7 +23,7 @@ export class AppComponent {
   
   private async init(): Promise<void> {
     this.users = await this.service.getUserList();
-    console.log(this.users);
+    // console.log(await this.service.getUserList());
   }
 
 }
