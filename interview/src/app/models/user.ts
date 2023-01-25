@@ -4,5 +4,5 @@ export interface User {
     company_name: string;
     company_full_address: string;
     website: string;
-    phone: number;
+    phone: string;
 }

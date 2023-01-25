@@ -20,6 +20,8 @@ export class JsonPlaceHolderService {
     this.subscription = await this.httpService.get<User[]>('https://jsonplaceholder.typicode.com/users')
       .subscribe(res => { 
         result = res;
+        console.log(result);
+
       });
     return result;
   }

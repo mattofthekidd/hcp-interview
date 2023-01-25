@@ -10,20 +10,18 @@ import { JsonPlaceHolderService } from './services/jsonplaceholder.service';
 export class AppComponent {
   private service: JsonPlaceHolderService;
 
-  title = 'interview';
-  users: User[] = [];
+  public users: User[] = [];
 
   public constructor(jsonPlaceHolderService: JsonPlaceHolderService) {
     this.service = jsonPlaceHolderService;
   };
 
-  ngOnInit() {
-    this.init();
+  async ngOnInit() {
+    await this.init();
   }
   
   private async init(): Promise<void> {
     this.users = await this.service.getUserList();
-    // console.log(await this.service.getUserList());
   }
 
 }
