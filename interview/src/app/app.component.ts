@@ -27,7 +27,7 @@ export class AppComponent {
 
   async ngOnInit(): Promise<void> {
     await this.init();
-    // this.sendData();
+    this.transformData();
   }
 
   ngOnDestroy(): void {
@@ -35,13 +35,15 @@ export class AppComponent {
   }
   
   private async init(): Promise<void> {
-    // const result = 
     this.subscriptions.push(
       await (
         await this.jsonPlaceHolderService.getUserList()
       ).subscribe(x => this.users = x)
     );
-    console.log(this.users)
+  }
+
+  private transformData(): void {
+    
   }
 
   private sendData(): void {
