@@ -16,16 +16,7 @@ export class JsonPlaceHolderService {
     }
   }
   public async getUserList(): Promise<Observable<User[]>> {
-    let result: User[] = [];
-    // this.subscription = 
     return await this.httpService.get<User[]>('https://jsonplaceholder.typicode.com/users');
-      // .subscribe(res => { 
-      //   console.log(res)
-      //   result = res;
-      //   console.log(result);
-
-      // });
-    // return result;
   }
   
 }
