@@ -1,11 +1,10 @@
-import { CommaExpr } from '@angular/compiler';
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { User } from './models/user';
 import { UserFormatted } from './models/userFormatted';
 import { HCPService } from './services/hcpservice.service';
 import { JsonPlaceHolderService } from './services/jsonplaceholder.service';
-import { StateLookUpService } from './services/state-look-up.service';
+// import { StateLookUpService } from './services/state-look-up.service';
 
 @Component({
   selector: 'app-root',

@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { User } from '../models/user';
 import { UserFormatted } from '../models/userFormatted';
 
 @Injectable({
