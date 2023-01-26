@@ -1,9 +1,11 @@
+import { CommaExpr } from '@angular/compiler';
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { User } from './models/user';
 import { UserFormatted } from './models/userFormatted';
 import { HCPService } from './services/hcpservice.service';
 import { JsonPlaceHolderService } from './services/jsonplaceholder.service';
+import { StateLookUpService } from './services/state-look-up.service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +15,7 @@ import { JsonPlaceHolderService } from './services/jsonplaceholder.service';
 export class AppComponent {
   private jsonPlaceHolderService: JsonPlaceHolderService;
   private hcpService: HCPService;
+  private stateLookUpService: StateLookUpService;
   private subscriptions: Subscription[] = [];
 
   public users: User[] = [];
@@ -20,10 +23,12 @@ export class AppComponent {
 
   public constructor(
       jsonPlaceHolderService: JsonPlaceHolderService,
-      hcpService: HCPService
+      hcpService: HCPService,
+      stateLookUpService: StateLookUpService,
     ) {
     this.jsonPlaceHolderService = jsonPlaceHolderService;
     this.hcpService = hcpService;
+    this.stateLookUpService = stateLookUpService;
   };
 
 
@@ -57,6 +62,9 @@ export class AppComponent {
     this.users.forEach(user => {
       const name = user.name.split(" ");
       const address = user.address;
+      let state = "";
+      this.stateLookUpService.getStateByZipCode(address.zipcode.split("-",1).toString());
+      // console.log(state)
       let transformedUser: UserFormatted = {
         first_name: name[0],
         last_name: name[1],

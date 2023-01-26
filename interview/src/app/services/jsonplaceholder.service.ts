@@ -9,12 +9,7 @@ import { Observable, Subscription } from 'rxjs';
 export class JsonPlaceHolderService {
 
   constructor(private httpService: HttpClient) { }
-  private subscription: Subscription = new Subscription();
-  ngOnDestroy() {
-    if(!!this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
+
   public async getUserList(): Promise<Observable<User[]>> {
     return await this.httpService.get<User[]>('https://jsonplaceholder.typicode.com/users');
   }
