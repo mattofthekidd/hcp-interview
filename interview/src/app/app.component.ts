@@ -20,6 +20,7 @@ export class AppComponent {
 
   public users: User[] = [];
   public formattedUsers: UserFormatted[] = [];
+  public formattedUsersString: string = "";
 
   public constructor(
       jsonPlaceHolderService: JsonPlaceHolderService,
@@ -46,6 +47,7 @@ export class AppComponent {
       ).subscribe(x => {
         this.users = x;
         this.transformData();
+        this.sendData();
       })
     );
   }
@@ -58,29 +60,42 @@ export class AppComponent {
   "phone": "2083567880"
   */
   private transformData(): void {
-    // console.log(this.users.length)
     this.users.forEach(user => {
       const name = user.name.split(" ");
       const address = user.address;
-      let state = "";
-      this.stateLookUpService.getStateByZipCode(address.zipcode.split("-",1).toString());
-      // console.log(state)
-      let transformedUser: UserFormatted = {
-        first_name: name[0],
-        last_name: name[1],
-        company_name: user.company.name,
-        company_full_address: `${address.street}, ${address.city}, STATE, ${address.zipcode}`,
-        website: user.website,
-        phone: 0,
-      };
-      this.formattedUsers.push(transformedUser);
+      let phone = user.phone.split("x");
+      let splitPhone = phone[0];
+      let completePhone = splitPhone.replace(/([-.() ])/g, "");
+      // let state = this.stateLookUpService.getStateByZipCode(address.zipcode.split("-",1).toString());
+
+      let stringUserList: string = `
+      "first_name": ${name[0]},
+      "last_name": ${name[1]},
+      "company_name": ${user.company.name},
+      "company_full_address": ${address.street}, ${address.city}, STATE, ${address.zipcode},
+      "website": ${user.website},
+      "phone": ${parseInt(completePhone)},
+      `;
+      this.formattedUsersString += `{${stringUserList}},`;
+      // let transformedUser: UserFormatted = {
+      //   first_name: name[0],
+      //   last_name: name[1],
+      //   company_name: user.company.name,
+      //   company_full_address: `${address.street}, ${address.city}, STATE, ${address.zipcode}`,
+      //   website: user.website,
+      //   phone: parseInt(completePhone),
+      // };
+      // this.formattedUsers.push(transformedUser);
     })
-    console.log(this.formattedUsers)
+
+    //Assuming that we were going to use this data on the site I would leave this object and create a new one for sending to the API.
+
   }
 
   private sendData(): void {
-    console.log(this.users)
-    this.hcpService.postUserList(this.users);
+    // console.log(this.formattedUsers)
+
+    this.hcpService.postUserList(this.formattedUsersString);
   }
 
 }
