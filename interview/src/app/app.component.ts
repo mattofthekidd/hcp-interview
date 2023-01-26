@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { User } from './models/user';
+import { UserFormatted } from './models/userFormatted';
 import { HCPService } from './services/hcpservice.service';
 import { JsonPlaceHolderService } from './services/jsonplaceholder.service';
 
@@ -15,6 +16,7 @@ export class AppComponent {
   private subscriptions: Subscription[] = [];
 
   public users: User[] = [];
+  public formattedUsers: UserFormatted[] = [];
 
   public constructor(
       jsonPlaceHolderService: JsonPlaceHolderService,
@@ -27,7 +29,6 @@ export class AppComponent {
 
   async ngOnInit(): Promise<void> {
     await this.init();
-    this.transformData();
   }
 
   ngOnDestroy(): void {
@@ -35,15 +36,36 @@ export class AppComponent {
   }
   
   private async init(): Promise<void> {
-    this.subscriptions.push(
-      await (
-        await this.jsonPlaceHolderService.getUserList()
-      ).subscribe(x => this.users = x)
+    this.subscriptions.push((
+      await this.jsonPlaceHolderService.getUserList()
+      ).subscribe(x => {
+        this.users = x;
+        this.transformData();
+      })
     );
   }
-
+  /*
+  "first_name": "StringValue",
+  "last_name": "StringValue",
+  "company_name": "StringValue",
+  "company_full_address": "Street Address, City, State, Zip",
+  "website": "StringValue",
+  "phone": "2083567880"
+  */
   private transformData(): void {
-    
+    console.log(this.users.length)
+    this.users.forEach(user => {
+      const name = user.name.split(" ");
+      let transformedUser: UserFormatted = {
+        first_name: name[0],
+        last_name: name[1],
+        company_name: "",
+        company_full_address: "",
+        website: "",
+        phone: 0,
+      };
+      this.formattedUsers.push(transformedUser);
+    })
   }
 
   private sendData(): void {
