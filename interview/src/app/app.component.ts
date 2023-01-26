@@ -53,19 +53,21 @@ export class AppComponent {
   "phone": "2083567880"
   */
   private transformData(): void {
-    console.log(this.users.length)
+    // console.log(this.users.length)
     this.users.forEach(user => {
       const name = user.name.split(" ");
+      const address = user.address;
       let transformedUser: UserFormatted = {
         first_name: name[0],
         last_name: name[1],
-        company_name: "",
-        company_full_address: "",
-        website: "",
+        company_name: user.company.name,
+        company_full_address: `${address.street}, ${address.city}, STATE, ${address.zipcode}`,
+        website: user.website,
         phone: 0,
       };
       this.formattedUsers.push(transformedUser);
     })
+    console.log(this.formattedUsers)
   }
 
   private sendData(): void {
